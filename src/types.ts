@@ -17,5 +17,44 @@ export interface Patient {
     gender: Gender;
     ssn?: string;
     dateOfBirth?: string;
-    entries: [{}];
+    entries: Entry[];
 }
+interface BaseEntry {
+    id: string;
+    description: string;
+    date: string;
+    specialist: string;
+    diagnosisCodes?: Array<Diagnosis["code"]>;
+}
+enum HealthCheckRating {
+    "Healthy" = 0,
+    "LowRisk" = 1,
+    "HighRisk" = 2,
+    "CriticalRisk" = 3,
+}
+
+interface HealthCheckEntry extends BaseEntry {
+    type: "HealthCheck";
+    healthCheckRating: HealthCheckRating;
+}
+interface HospitalEntry extends BaseEntry {
+    type: "HealthCheck";
+    discharge: Discharge;
+}
+interface OccupationalHealthcareEntry extends BaseEntry {
+    type: "HealthCheck";
+    employerName: HealthCheckRating;
+    sickLeave: SickLeave;
+}
+interface SickLeave {
+    startDate: Date;
+    endDate: Date;
+}
+interface Discharge {
+    date: Date;
+    criteria: string;
+}
+export type Entry =
+    | HospitalEntry
+    | OccupationalHealthcareEntry
+    | HealthCheckEntry;
