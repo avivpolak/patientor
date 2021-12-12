@@ -5,6 +5,8 @@ import { useStateValue } from "../state";
 import { Entry, Patient } from "../types";
 import { Table } from "semantic-ui-react";
 import HealthRatingBar from "../components/HealthRatingBar";
+import EntryEl from "./Enrty";
+
 const PatientPage = () => {
     const [state, dispatch] = useStateValue();
     const { id } = useParams<{ id: string }>();
@@ -46,16 +48,10 @@ const PatientPage = () => {
                     </Table.Row>
                 </Table.Body>
             </Table>
-            <ul>
-                {Object.values(patient.entries).map((entry: Entry) => (
-                    <li key={entry.description}>
-                        <p>{entry.date}</p>
-                        <p>{entry.description}</p>
-                        <p>{entry.specialist}</p>
-                        <p>{entry.type}</p>
-                    </li>
-                ))}
-            </ul>
+
+            {Object.values(patient.entries).map((entry: Entry) => (
+                <EntryEl entry={entry} key={entry.id} />
+            ))}
         </div>
     ) : (
         <div>nothing to show</div>
